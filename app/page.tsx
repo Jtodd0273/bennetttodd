@@ -1,69 +1,67 @@
-import Image from "next/image";
+import Link from "next/link";
+import Carousel from "./components/Carousel";
+import { practice, slides } from "./lib/practice";
+
+// Each row of the headline is a line of an eye chart: the text gets smaller going down.
+const rows = [
+  { text: "Bennett", size: "text-[clamp(3rem,13vw,9rem)]" },
+  { text: "& Todd", size: "text-[clamp(2.25rem,9vw,6rem)]" },
+  { text: "Opticians", size: "text-[clamp(1.5rem,5.5vw,3.75rem)]" },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="mx-auto max-w-5xl px-6 pt-8 pb-16">
+      <h1 className="sr-only">Bennett &amp; Todd Opticians</h1>
+      <div className="border-t border-line" aria-hidden="true">
+        {rows.map((row) => (
+          <div key={row.text} className="border-b border-line py-3 sm:py-4">
+            <span className={`font-display font-extrabold leading-[0.95] tracking-tight ${row.size}`}>
+              {row.text}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-8">
+        <Carousel slides={slides} />
+      </div>
+
+      <div className="mt-12 grid gap-12 md:grid-cols-[1fr_20rem]">
+        {/* TODO: replace this text with your own welcome message */}
+        <section>
+          <h2 className="font-display text-3xl font-bold">Welcome</h2>
+          <p className="mt-4 max-w-prose text-lg leading-relaxed">
+            Whether you're here for a routine eye test, a new pair of glasses or advice about your contact lenses, we're glad to see you. Our team takes the time to explain what we find, answer your questions and help you choose something that suits you.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <p className="mt-4 max-w-prose text-lg leading-relaxed">
+            Booking is simple: choose a day and time online and we'll confirm your appointment by email or phone. Eye tests take 45 minutes, so please arrive a few minutes early. If you wear glasses or contact lenses, bring your current pair, and your most recent prescription if you have one.
+          </p>
+          <p className="mt-4 max-w-prose text-lg leading-relaxed">
+            New and returning patients are always welcome. If you have any questions before your visit, give us a call or pop in and we'll be happy to help.
+          </p>
+          <Link
+            href="/book"
+            className="mt-8 inline-block rounded-full bg-purple px-7 py-3 text-lg font-semibold text-white hover:bg-ink"
           >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+            Book an appointment
+          </Link>
+        </section>
+
+        <section aria-labelledby="hours-heading" className="self-start rounded-2xl bg-tint p-6">
+          <h2 id="hours-heading" className="font-display text-2xl font-bold">Opening hours</h2>
+          <table className="mt-4 w-full text-base">
+            <tbody>
+              {practice.hours.map(([day, time]) => (
+                <tr key={day} className="border-b border-line last:border-0">
+                  <th scope="row" className="py-2 pr-3 text-left font-normal">{day}</th>
+                  <td className="py-2 text-right tabular-nums">{time}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      </div>
     </div>
   );
 }
