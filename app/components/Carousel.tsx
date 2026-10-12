@@ -40,7 +40,6 @@ export default function Carousel({
     >
       <div className="relative aspect-[4/3] sm:aspect-[21/9]">
         {slides.map((s, i) => (
-          // eslint-disable-next-line @next/next/no-img-element
           <img
             key={s.src}
             src={s.src}

@@ -3,7 +3,7 @@ import { sendReminders } from "../../../lib/reminders";
 
 export const dynamic = "force-dynamic";
 
-// Called on a schedule by Vercel (see vercel.json). Only works with the secret.
+// Called on a schedule by Vercel to send the email reminders
 export async function GET(req: Request) {
   const secret = process.env.CRON_SECRET;
   if (!secret || req.headers.get("authorization") !== `Bearer ${secret}`) {

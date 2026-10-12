@@ -2,7 +2,6 @@ import Link from "next/link";
 import Carousel from "./components/Carousel";
 import { practice, slides } from "./lib/practice";
 
-// Each row of the headline is a line of an eye chart: the text gets smaller going down.
 const rows = [
   { text: "Bennett", size: "text-[clamp(3rem,13vw,9rem)]" },
   { text: "& Todd", size: "text-[clamp(2.25rem,9vw,6rem)]" },
@@ -28,7 +27,6 @@ export default function Home() {
       </div>
 
       <div className="mt-12 grid gap-12 md:grid-cols-[1fr_20rem]">
-        {/* TODO: replace this text with your own welcome message */}
         <section>
           <h2 className="font-display text-3xl font-bold">Welcome</h2>
           <p className="mt-4 max-w-prose text-lg leading-relaxed">

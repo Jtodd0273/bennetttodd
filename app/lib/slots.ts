@@ -13,8 +13,6 @@ function londonParts(date: Date) {
   return o;
 }
 
-// Turns a UK wall-clock time (e.g. 2026-10-06 09:30) into the real moment in time,
-// handling British Summer Time correctly wherever the server is running.
 export function londonToDate(dateStr: string, time: string): Date {
   const [y, m, d] = dateStr.split("-").map(Number);
   const [h, mi] = time.split(":").map(Number);
@@ -48,7 +46,6 @@ const fromMin = (n: number) =>
 
 export type Slot = { time: string; startsAt: Date; endsAt: Date };
 
-// Every slot the practice offers on a date, ignoring existing bookings.
 export function slotsForDate(dateStr: string): Slot[] {
   if (!isValidDate(dateStr) || booking.closedDates.includes(dateStr)) return [];
   const today = todayLondon();
@@ -66,7 +63,6 @@ export function slotsForDate(dateStr: string): Slot[] {
   return out;
 }
 
-// Slots that are not already taken by a pending or confirmed appointment.
 export async function freeSlotsForDate(dateStr: string): Promise<Slot[]> {
   const slots = slotsForDate(dateStr);
   if (slots.length === 0) return [];

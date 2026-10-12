@@ -1,5 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-
+// Searches to find patients who match patients already in the database
 export type PatientLite = {
   id: string;
   first_name: string;
@@ -9,10 +9,8 @@ export type PatientLite = {
 };
 type Booker = { name: string; email: string | null; phone: string | null };
 
-// Removes characters that would confuse the database search filter.
 const clean = (s: string) => s.replace(/[,()%*\\"_]/g, "").trim();
 
-// 01234 567890, 01234-567890 and +44 1234 567890 all become 01234567890.
 const digits = (s: string | null) => {
   const d = (s ?? "").replace(/\D/g, "");
   return d.startsWith("44") ? "0" + d.slice(2) : d;
@@ -34,7 +32,6 @@ export function sameName(p: { first_name: string; last_name: string }, bookerNam
   return a !== "" && a === nameKey(bookerName);
 }
 
-// Patients who share the booker's email or phone number (the name may differ, e.g. family).
 export async function findMatches(db: SupabaseClient, b: Booker): Promise<PatientLite[]> {
   const last = clean(b.name.split(/\s+/).pop() ?? "");
   const email = clean(b.email ?? "");

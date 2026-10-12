@@ -3,7 +3,7 @@ import PatientForm, { type Patient } from "../PatientForm";
 import { linkAppointment } from "../../../actions";
 import { when } from "../../../../lib/format";
 import { supabaseServer } from "../../../../lib/supabase-server";
-
+// For staff to view patients and appointments
 export const metadata = { title: "Patient | Staff" };
 
 type Appt = { id: string; starts_at: string; status: string; appointment_type: string };
@@ -15,14 +15,12 @@ export default async function PatientPage({ params }: { params: Promise<{ id: st
   const { data: patient } = await supabase.from("patients").select("*").eq("id", id).maybeSingle();
   if (!patient) notFound();
 
-  // Record who opened this patient's file.
   const { data: { user } } = await supabase.auth.getUser();
   if (user) await supabase.from("audit_log").insert({ staff_id: user.id, action: "patient_viewed", table_name: "patients", record_id: id });
 
   const cols = "id, starts_at, status, appointment_type";
   const { data: linked } = await supabase.from("appointments").select(cols).eq("patient_id", id).order("starts_at", { ascending: false });
 
-  // Online bookings with no patient record yet that use this patient's email or phone.
   const unlinked = new Map<string, Appt>();
   if (patient.email) {
     const { data } = await supabase.from("appointments").select(cols).is("patient_id", null).eq("booker_email", patient.email);

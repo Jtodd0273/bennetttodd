@@ -55,7 +55,6 @@ export async function setStatus(formData: FormData) {
   revalidatePath("/staff/reminders");
 }
 
-// When an appointment is confirmed, line up an email reminder for staff to approve.
 async function queueReminder(db: Db, appointmentId: string) {
   const { data: a } = await db
     .from("appointments").select("starts_at, booker_email, reminder_email").eq("id", appointmentId).maybeSingle();
@@ -65,7 +64,6 @@ async function queueReminder(db: Db, appointmentId: string) {
   if (start <= Date.now()) return;
   const sendAt = Math.max(Date.now(), start - booking.reminderHoursBefore * 3600000);
 
-  // A unique index stops duplicates, so an error here just means one already exists.
   await db.from("reminders").insert({
     appointment_id: appointmentId, channel: "email", send_at: new Date(sendAt).toISOString(), status: "queued",
   });
@@ -110,7 +108,6 @@ export async function savePatient(_prev: { error?: string }, formData: FormData)
   redirect(`/staff/patients/${patientId}`);
 }
 
-// Makes a patient record from an online booking's details and links the two.
 export async function createPatientFromBooking(formData: FormData) {
   const id = String(formData.get("id") ?? "");
   const { db, staffId } = await currentStaff();

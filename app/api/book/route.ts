@@ -5,7 +5,7 @@ import { freeSlotsForDate } from "../../lib/slots";
 import { supabaseAdmin } from "../../lib/supabase-admin";
 
 export const dynamic = "force-dynamic";
-
+// Handles the booking form submission by validating the inputs and creating a new appointment record
 const str = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 const fail = (error: string, status = 400) => NextResponse.json({ error }, { status });
 const TAKEN = "Sorry, that time has just been taken. Please choose another.";
@@ -18,7 +18,6 @@ export async function POST(req: Request) {
     return fail("Invalid request");
   }
 
-  // Hidden field that real people never fill in; bots often do.
   if (str(b.website, 100)) return NextResponse.json({ ok: true });
 
   const name = str(b.name, 100);
@@ -32,7 +31,7 @@ export async function POST(req: Request) {
   if (!/^\d{10,15}$/.test(phone.replace(/[\s()+-]/g, ""))) return fail("Please enter a valid phone number.");
 
   try {
-    // Work out the real start time on the server from the offered slots, never from the browser.
+    // Work out the real start time on the server from the offered slots
     const slot = (await freeSlotsForDate(date)).find((s) => s.time === time);
     if (!slot) return fail(TAKEN, 409);
 

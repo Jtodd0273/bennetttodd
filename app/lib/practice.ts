@@ -1,4 +1,4 @@
-// TODO: replace these placeholders with the practice's real details.
+
 
 export const practice = {
   phone: "028 3755 2678",
@@ -13,9 +13,6 @@ export const practice = {
   ],
 };
 
-// Photos for the home page slideshow.
-// Put image files in the "public/images" folder, then list them here.
-// Add or remove lines as you like. "alt" describes the photo for screen readers.
 export const slides = [
   { src: "/images/slide-1.jpg", alt: "The front of the practice" },
   { src: "/images/slide-2.jpg", alt: "Our frames display" },

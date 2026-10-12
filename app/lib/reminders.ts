@@ -48,7 +48,6 @@ async function sendEmail(to: string, name: string, startsAt: string): Promise<bo
 
 type Appt = { booker_name: string; booker_email: string | null; starts_at: string; status: string };
 
-// Sends approved email reminders that are due. Pass an id to send just that one now.
 export async function sendReminders(onlyId?: string) {
   const db = supabaseAdmin();
   let query = db
@@ -64,7 +63,6 @@ export async function sendReminders(onlyId?: string) {
   let sent = 0;
   let failed = 0;
   for (const r of data ?? []) {
-    // Claim it first, so two runs at once can never send the same email twice.
     const { data: claimed } = await db
       .from("reminders")
       .update({ status: "sent", sent_at: new Date().toISOString() })
@@ -74,7 +72,6 @@ export async function sendReminders(onlyId?: string) {
     const raw = r.appointments as unknown;
     const a = (Array.isArray(raw) ? raw[0] : raw) as Appt | undefined;
 
-    // Appointment was cancelled, has passed, or has no email address: nothing to send.
     if (!a || a.status !== "confirmed" || !a.booker_email || new Date(a.starts_at) <= new Date()) {
       await db.from("reminders").update({ status: "cancelled", sent_at: null }).eq("id", r.id);
       continue;

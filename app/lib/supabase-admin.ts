@@ -1,6 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
 
-// Server-only. Uses the secret key, so never import this into a client component.
 export function supabaseAdmin() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;

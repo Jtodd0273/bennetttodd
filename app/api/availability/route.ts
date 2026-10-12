@@ -3,7 +3,7 @@ import { freeSlotsForDate } from "../../lib/slots";
 
 export const dynamic = "force-dynamic";
 
-// Returns only the free start times for a date. No patient details leave the server.
+// Returns only the free appointment times for a date, used by the booking form
 export async function GET(req: Request) {
   const date = new URL(req.url).searchParams.get("date") ?? "";
   try {

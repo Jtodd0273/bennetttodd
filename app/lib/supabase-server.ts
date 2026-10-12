@@ -1,8 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
-// Database connection that acts as the logged-in staff member.
-// Row-level security in Supabase decides what they are allowed to see.
 export async function supabaseServer() {
   const cookieStore = await cookies();
   return createServerClient(
@@ -15,7 +13,6 @@ export async function supabaseServer() {
           try {
             list.forEach(({ name, value, options }) => cookieStore.set(name, value, options));
           } catch {
-            // Called from a page: the proxy keeps the session fresh instead.
           }
         },
       },

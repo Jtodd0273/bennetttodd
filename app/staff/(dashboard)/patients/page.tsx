@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { supabaseServer } from "../../../lib/supabase-server";
-
+// For staff to view patients and appointments
 export const metadata = { title: "Patients | Staff" };
 
 export default async function Patients({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
@@ -12,7 +12,6 @@ export default async function Patients({ searchParams }: { searchParams: Promise
     .select("id, first_name, last_name, date_of_birth, email, phone")
     .order("last_name").order("first_name").limit(50);
 
-  // Every word typed must match the name, email or phone of the patient.
   for (const word of q.split(/\s+/).map((w) => w.replace(/[,()%*\\"']/g, "")).filter(Boolean)) {
     query = query.or(
       `first_name.ilike.%${word}%,last_name.ilike.%${word}%,email.ilike.%${word}%,phone.ilike.%${word}%`
